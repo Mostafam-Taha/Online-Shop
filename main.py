@@ -12,7 +12,7 @@ def load_session_user():
     if not os.path.exists(data_user_file):
         return []
     with open(data_session_file, "r", encoding="utf-8") as file:
-        return json
+        return json.load(file)
 
 def save_session_user(data_session):
     with open(data_session_file, "w", encoding="utf-8") as file:
@@ -37,9 +37,9 @@ class Created_Account:
         self.us_ad = user_admin
 
     def option_adus(self):
-        if "user" == self.us_ad:
+        if self.us_ad == "user":
             self.sgin_up()
-        elif "admin" == self.us_ad:
+        elif self.us_ad == "admin":
             pass
         else:
             print("Error")
@@ -59,7 +59,7 @@ class Created_Account:
                 new_id = max([emp["id"] for emp in data], default=0) + 1
                 created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
                 token_session = generate_random_string()
-                save_session_user(token_session)
+                # save_session_user(token_session)
 
                 new_account_user = {
                     "id": new_id,
@@ -93,6 +93,8 @@ class Created_Account:
             file_rearning = json.load(file)
             for i in file_rearning:
                 print(i)
+
+
                 
 chease = input("Please Enter your Opint User or admin: ").lower()
-Created_Account(chease).sgin_up()
+Created_Account(chease).login()
