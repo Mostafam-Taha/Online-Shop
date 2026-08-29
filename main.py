@@ -8,6 +8,7 @@ from datetime import datetime
 
 data_user_file = "Users.json"
 data_session_file = "Session_user.json"
+data_products_file = "Products.json"
 
 def load_session_user():
     if not os.path.exists(data_user_file):
@@ -98,10 +99,18 @@ class Created_Account:
                     password = input("Please enter your password: ")
                     if password == i["Password"]:
                         print("Done: Login account")
-                        pass
+                        self.products()
 
-    def 
+    def products(self):
+        with open(data_products_file, "r", encoding="utf-8") as file:
+            read_all_products = json.load(file)
+            
+            print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
+            print("-" * 68)
+            
+            for i in read_all_products: 
+                print(f"{i['id']:<5}{i['Name']:<20}{i['Price']:<15.2f}{i['quantity']:<8}{i['Created_at']}")
 
     
 chease = input("Please Enter your Opint User or admin: ").lower()
-Created_Account(chease).option_adus()
+Created_Account(chease).products()

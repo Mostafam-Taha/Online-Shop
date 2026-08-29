@@ -107,4 +107,3 @@ def add_product():
     print(f"{"ID":<5}{"Name":<20}{"Price":<15}{"Qty":<8}{"Created At":<20}")
     print("-" * 68)
     print(f"{id_product:<5}{name_product:<20}{price_product:<15.2f}{quantity:<8}{created_at}")
-add_product()
