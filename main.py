@@ -3,6 +3,7 @@ import os
 import json
 import secrets
 import string
+import admin
 from datetime import datetime
 
 data_user_file = "Users.json"
@@ -40,7 +41,7 @@ class Created_Account:
         if self.us_ad == "user":
             self.sgin_up()
         elif self.us_ad == "admin":
-            pass
+            admin.option_account()
         else:
             print("Error")
     
@@ -80,6 +81,7 @@ class Created_Account:
                 # Session User
                 data_session.append(session_user)
                 save_session_user(data_session)
+                print("Done: Created account")
                 break
             else:
                 print("Error: Incurrect password")
@@ -96,5 +98,8 @@ class Created_Account:
                     password = input("Please enter your password: ")
                     if password == i["Password"]:
                         print("Done: Login account")
+                        pass
+
+    
 chease = input("Please Enter your Opint User or admin: ").lower()
-Created_Account(chease).login()
+Created_Account(chease).option_adus()
