@@ -100,6 +100,8 @@ class Created_Account:
                         print("Done: Login account")
                         pass
 
+    def 
+
     
 chease = input("Please Enter your Opint User or admin: ").lower()
 Created_Account(chease).option_adus()

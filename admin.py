@@ -25,7 +25,8 @@ def save_product(data_product):
     with open(data_file_product, "w", encoding="utf-8") as file:
         json.dump(data_product, file, ensure_ascii=False, indent=4)
 
-def option_account(user_input):
+def option_account():
+    user_input = int(input("Please choase\n1. Login\n2. Sigh in\n"))
     if user_input == 1:
         sgin_in()
     elif user_input == 2:
@@ -33,7 +34,6 @@ def option_account(user_input):
     else:
         print("Error: Faild")
 
-option_user = input("Please choase\n1. Login\n2. Sigh in")
 
 def sgin_in():
     data_admin = load_data()
@@ -77,8 +77,21 @@ def add_product():
     data = load_product()
     print("-" * 20)
     name_product = input("Please enter your name product: ")
-    price_product = int(input(f"Please enter your price, {name_product}: "))
-    quantity = int(input(f"Please enter your quantity, {name_product}: "))
+    while True:
+        try:
+            price_product = float(input(f"Please enter your price, {name_product}: "))
+            break
+        except ValueError:
+            print("Error: please enter your price currect")
+            continue
+    while True:
+        try:
+            quantity = int(input(f"Please enter your quantity, {name_product}: "))
+            break
+        except ValueError:
+            print("Please enter your quantity")
+            continue
+
     id_product = max([product_id["id"] for product_id in data], default=0) + 1
     created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
     new_product = {
@@ -91,3 +104,7 @@ def add_product():
 
     data.append(new_product)
     save_product(data)
+    print(f"{"ID":<5}{"Name":<20}{"Price":<15}{"Qty":<8}{"Created At":<20}")
+    print("-" * 68)
+    print(f"{id_product:<5}{name_product:<20}{price_product:<15.2f}{quantity:<8}{created_at}")
+add_product()
