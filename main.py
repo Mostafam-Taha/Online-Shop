@@ -88,13 +88,13 @@ class Created_Account:
     def login(self):
         print("-" * 20)
         username = input("Please enter your username: ")
-        password = input("please enter your password: ")
         with open(data_user_file, "r", encoding="utf-8") as file:
             file_rearning = json.load(file)
+
             for i in file_rearning:
-                print(i)
-
-
-                
+                if username == i["Username"]:
+                    password = input("Please enter your password: ")
+                    if password == i["Password"]:
+                        print("Done: Login account")
 chease = input("Please Enter your Opint User or admin: ").lower()
 Created_Account(chease).login()
