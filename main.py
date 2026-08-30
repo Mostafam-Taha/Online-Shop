@@ -10,6 +10,7 @@ data_user_file = "DataBase/Users/Users.json"
 data_session_file = "DataBase/Users/Session_user.json"
 data_products_file = "DataBase/Products/Products.json"
 data_Addproduct_file = "DataBase/Products/List_product.json"
+result = 0
 
 # Sessions
 def load_session_user():
@@ -141,12 +142,14 @@ class Online_Shop:
                     add_id = product["id"]
                     add_id_user = read_all_product_user["id"]
                     add_name = product["Name"]
+                    add_price = product["Price"]
                     add_token = read_all_product_user["Token"]
                     created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
                     new_add_cart = {
                         "id": add_id,
                         "id_user": add_id_user,
                         "Name": add_name,
+                        "Price": add_price,
                         "Token": add_token,
                         "Created_at": created_at
                     }
@@ -161,16 +164,20 @@ class Online_Shop:
             file_reading = load_AddProduct_data()
             print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
             print("-" * 68)
-            
             for index in file_reading: 
                 print(f"{index['id']:<5}{index['Name']:<20}{index['Price']:<15.2f}{index['quantity']:<8}{index['Created_at']}")
 
     def chack_out(self):
+        global result
         file_reading = load_AddProduct_data()
         file_reading_users = load_data()
-        for index, test in zip(file_reading, file_reading_users):
-            if index["id_user"] == test["id"]:
-                print(index, test)
+        for index in file_reading_users:
+            for kay in file_reading:
+                if index["id"] == kay["id_user"]:
+                    result = kay["Price"] + result
+                    print(f"{kay['Name']:<20}{kay['Price']:>10.2f} EGP")
+        print("-" * 30)
+        print(f"{'Total':<20}{result:>10.2f} EGP")
 
 while True:
     chease = input("Please Enter your Opint User or admin: ").lower()
