@@ -76,7 +76,15 @@ def login():
 def add_product():
     data = load_product()
     print("-" * 20)
-    name_product = input("Please enter your name product: ")
+
+    while True:
+        name_product = input("Please enter your name product: ").strip()
+        duplicate = any(row["Name"] == name_product for row in data)
+        if duplicate:
+            print(f"Error: Product '{name_product}' already exists. Please enter a different name.")
+            continue
+        break
+
     while True:
         try:
             price_product = float(input(f"Please enter your price, {name_product}: "))
@@ -84,6 +92,7 @@ def add_product():
         except ValueError:
             print("Error: please enter your price currect")
             continue
+
     while True:
         try:
             quantity = int(input(f"Please enter your quantity, {name_product}: "))
@@ -94,6 +103,7 @@ def add_product():
 
     id_product = max([product_id["id"] for product_id in data], default=0) + 1
     created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
+
     new_product = {
         "id": id_product,
         "Name": name_product,
@@ -104,6 +114,7 @@ def add_product():
 
     data.append(new_product)
     save_product(data)
-    print(f"{"ID":<5}{"Name":<20}{"Price":<15}{"Qty":<8}{"Created At":<20}")
+    print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
     print("-" * 68)
     print(f"{id_product:<5}{name_product:<20}{price_product:<15.2f}{quantity:<8}{created_at}")
+add_product()

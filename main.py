@@ -9,7 +9,9 @@ from datetime import datetime
 data_user_file = "Users.json"
 data_session_file = "Session_user.json"
 data_products_file = "Products.json"
+data_Addproduct_file = "List_product.json"
 
+# Sessions
 def load_session_user():
     if not os.path.exists(data_user_file):
         return []
@@ -20,6 +22,7 @@ def save_session_user(data_session):
     with open(data_session_file, "w", encoding="utf-8") as file:
             json.dump(data_session, file, indent=4, ensure_ascii=False)
 
+# Login User
 def load_data():
     if not os.path.exists(data_user_file):
         return []
@@ -30,6 +33,17 @@ def save_data(data):
     with open(data_user_file, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
+# Add Product
+def load_AddProduct_data():
+    if not os.path.exists(data_Addproduct_file):
+        return []
+    with open(data_Addproduct_file, "r", encoding="utf-8") as file:
+        return json.load(file)
+
+def save_AddProduct_data(data_AddProduct):
+    with open(data_Addproduct_file, "w", encoding="utf-8") as file:
+        json.dump(data_AddProduct, file, indent=4, ensure_ascii=False)
+    
 def generate_random_string(length=32):
     characters = string.digits + string.ascii_letters + string.punctuation
     return ''.join(secrets.choice(characters) for _ in range(length))
@@ -80,8 +94,8 @@ class Created_Account:
                 save_data(data)
 
                 # Session User
-                data_session.append(session_user)
-                save_session_user(data_session)
+                # data_session.append(session_user)
+                save_session_user(session_user)
                 print("Done: Created account")
                 break
             else:
@@ -102,8 +116,9 @@ class Created_Account:
                         self.products()
 
     def products(self):
-        with open(data_products_file, "r", encoding="utf-8") as file:
+        with open(data_products_file, "r", encoding="utf-8") as file, open(data_session_file, "r", encoding="utf-8") as file_user:
             read_all_products = json.load(file)
+            read_all_product_user = json.load(file_user)
             
             print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
             print("-" * 68)
@@ -111,6 +126,27 @@ class Created_Account:
             for i in read_all_products: 
                 print(f"{i['id']:<5}{i['Name']:<20}{i['Price']:<15.2f}{i['quantity']:<8}{i['Created_at']}")
 
-    
-chease = input("Please Enter your Opint User or admin: ").lower()
-Created_Account(chease).products()
+            print("-" * 4)
+            while True:
+                select_product = input("Please select product: ").strip()
+                if select_product == "":
+                    print("Error: You must enter a value")
+                    continue
+                break
+
+            for index in read_all_products:
+                if select_product == index["Name"]:
+                    add_id = index["id"]
+                    add_name = index["Name"]
+                    add_username = read_all_product_user["Token"]
+                    print(add_name  )
+                    break
+
+while True:
+    chease = input("Please Enter your Opint User or admin: ").lower()
+    if chease == "":
+        print("Error: You must enter a value")
+        continue
+    else:
+        Created_Account(chease).products()
+        break
