@@ -6,10 +6,10 @@ import string
 import admin
 from datetime import datetime
 
-data_user_file = "Users.json"
-data_session_file = "Session_user.json"
-data_products_file = "Products.json"
-data_Addproduct_file = "List_product.json"
+data_user_file = "DataBase/Users/Users.json"
+data_session_file = "DataBase/Users/Session_user.json"
+data_products_file = "DataBase/Products/Products.json"
+data_Addproduct_file = "DataBase/Products/List_product.json"
 
 # Sessions
 def load_session_user():
@@ -115,7 +115,9 @@ class Created_Account:
                         print("Done: Login account")
                         self.products()
 
+class Online_Shop:
     def products(self):
+        data = load_AddProduct_data()
         with open(data_products_file, "r", encoding="utf-8") as file, open(data_session_file, "r", encoding="utf-8") as file_user:
             read_all_products = json.load(file)
             read_all_product_user = json.load(file_user)
@@ -134,13 +136,41 @@ class Created_Account:
                     continue
                 break
 
-            for index in read_all_products:
-                if select_product == index["Name"]:
-                    add_id = index["id"]
-                    add_name = index["Name"]
-                    add_username = read_all_product_user["Token"]
-                    print(add_name  )
+            for product in read_all_products:
+                if select_product == product["Name"]:
+                    add_id = product["id"]
+                    add_id_user = read_all_product_user["id"]
+                    add_name = product["Name"]
+                    add_token = read_all_product_user["Token"]
+                    created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
+                    new_add_cart = {
+                        "id": add_id,
+                        "id_user": add_id_user,
+                        "Name": add_name,
+                        "Token": add_token,
+                        "Created_at": created_at
+                    }
+
+                    data.append(new_add_cart)
+                    save_AddProduct_data(data)
+                    
+                    print(f"Done: Add to cart {add_name}")
                     break
+
+    def show_all_product(self):
+            file_reading = load_AddProduct_data()
+            print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
+            print("-" * 68)
+            
+            for index in file_reading: 
+                print(f"{index['id']:<5}{index['Name']:<20}{index['Price']:<15.2f}{index['quantity']:<8}{index['Created_at']}")
+
+    def chack_out(self):
+        file_reading = load_AddProduct_data()
+        file_reading_users = load_data()
+        for index, test in zip(file_reading, file_reading_users):
+            if index["id_user"] == test["id"]:
+                print(index, test)
 
 while True:
     chease = input("Please Enter your Opint User or admin: ").lower()
@@ -148,5 +178,5 @@ while True:
         print("Error: You must enter a value")
         continue
     else:
-        Created_Account(chease).products()
+        Online_Shop().chack_out()
         break

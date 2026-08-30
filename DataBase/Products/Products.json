@@ -1,0 +1,128 @@
+[
+    {
+        "id": 1,
+        "Name": "Oil",
+        "Price": 43,
+        "quantity": 54,
+        "Created_at": "Aug-2026-29 08:48:57"
+    },
+    {
+        "id": 2,
+        "Name": "asf",
+        "Price": 34,
+        "quantity": 34,
+        "Created_at": "Aug-2026-29 08:50:12"
+    },
+    {
+        "id": 3,
+        "Name": "ms",
+        "Price": 34,
+        "quantity": 43,
+        "Created_at": "Aug-2026-29 08:55:50"
+    },
+    {
+        "id": 4,
+        "Name": "admin",
+        "Price": 23,
+        "quantity": 321,
+        "Created_at": "Aug-2026-29 08:57:08"
+    },
+    {
+        "id": 5,
+        "Name": "po",
+        "Price": 543,
+        "quantity": 2,
+        "Created_at": "Aug-2026-29 08:57:43"
+    },
+    {
+        "id": 6,
+        "Name": "a;sfd",
+        "Price": 344,
+        "quantity": 5,
+        "Created_at": "Aug-2026-29 08:58:50"
+    },
+    {
+        "id": 7,
+        "Name": "mostafa",
+        "Price": 43,
+        "quantity": 543,
+        "Created_at": "Aug-2026-29 08:59:38"
+    },
+    {
+        "id": 8,
+        "Name": "taha",
+        "Price": 54,
+        "quantity": 234,
+        "Created_at": "Aug-2026-29 09:00:26"
+    },
+    {
+        "id": 9,
+        "Name": "taha",
+        "Price": 543,
+        "quantity": 235,
+        "Created_at": "Aug-2026-29 09:00:58"
+    },
+    {
+        "id": 10,
+        "Name": "Oil",
+        "Price": 69,
+        "quantity": 76,
+        "Created_at": "Aug-2026-29 09:01:59"
+    },
+    {
+        "id": 11,
+        "Name": "Oil",
+        "Price": 69,
+        "quantity": 43,
+        "Created_at": "Aug-2026-29 09:02:24"
+    },
+    {
+        "id": 12,
+        "Name": "asdf",
+        "Price": 34,
+        "quantity": 3,
+        "Created_at": "Aug-2026-29 09:03:02"
+    },
+    {
+        "id": 13,
+        "Name": "a",
+        "Price": 3456,
+        "quantity": 543,
+        "Created_at": "Aug-2026-29 09:28:44"
+    },
+    {
+        "id": 14,
+        "Name": "add",
+        "Price": 44,
+        "quantity": 43,
+        "Created_at": "Aug-2026-29 20:59:57"
+    },
+    {
+        "id": 15,
+        "Name": "yal",
+        "Price": 54.0,
+        "quantity": 34,
+        "Created_at": "Aug-2026-29 21:11:23"
+    },
+    {
+        "id": 16,
+        "Name": "Oil",
+        "Price": 3.0,
+        "quantity": 34,
+        "Created_at": "Aug-2026-30 05:43:37"
+    },
+    {
+        "id": 17,
+        "Name": "Oil",
+        "Price": 43.0,
+        "quantity": 34,
+        "Created_at": "Aug-2026-30 05:44:48"
+    },
+    {
+        "id": 18,
+        "Name": "mo34",
+        "Price": 132.0,
+        "quantity": 20,
+        "Created_at": "Aug-2026-30 15:39:58"
+    }
+]

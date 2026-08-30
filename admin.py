@@ -2,8 +2,8 @@ import json
 import os
 from datetime import datetime
 
-data_file_admin = "Admin.json"
-data_file_product = "Products.json"
+data_file_admin = "DataBase/Admin/Admin.json"
+data_file_product = "DataBase/Admin/Products.json"
 
 def load_data():
     if not os.path.exists(data_file_admin):
@@ -117,4 +117,3 @@ def add_product():
     print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
     print("-" * 68)
     print(f"{id_product:<5}{name_product:<20}{price_product:<15.2f}{quantity:<8}{created_at}")
-add_product()
