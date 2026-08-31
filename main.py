@@ -284,14 +284,48 @@ class Online_Shop:
         elif choose == "n":
             print("Ok")
 
-    
+def show_LoSi():
+    print("1. Sigh in")
+    print("2. Login")
+    print("3. Show Menu OS")
 
-if __name__ == "__main__":
+def show_menu():
+    print("1. Products")
+    print("2. Show All Product")
+    print("3. Check Out")
+    print("0. Exit")
+
+def CA_User():
+    in_CA = Created_Account()
     while True:
-        chease = input("Please Enter your Opint User or admin: ").lower()
-        if chease == "":
-            print("Error: You must enter a value")
-            continue
-        else:
-            Online_Shop().chack_out()
+        show_LoSi()
+        choose = int(input("Please Choose From Menu: "))
+
+
+def manu():
+    in_OS = Online_Shop()
+    while True:
+        show_menu()
+        choose = int(input("Please Choose from menu: "))
+        if choose == 1:
+            in_OS.products()
+        elif choose == 2:
+            in_OS.show_all_product()
+        elif choose == 3:
+            in_OS.chack_out()
+        elif choose == 0:
             break
+        else:
+            print("Error: Again")
+            continue
+
+def InputUser():
+    if __name__ == "__main__":
+        while True:
+            chease = input("Please Enter your Opint User or admin: ").lower()
+            if chease == "":
+                print("Error: You must enter a value")
+                continue
+            else:
+                Online_Shop().chack_out()
+                break
