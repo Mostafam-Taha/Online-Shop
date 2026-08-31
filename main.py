@@ -13,6 +13,7 @@ data_session_file = "DataBase/Users/Session_user.json"
 data_products_file = "DataBase/Products/Products.json"
 data_Addproduct_file = "DataBase/Products/List_product.json"
 data_CheckOut_file = "DataBase/Products/CheckOut.json"
+data_session_file_AccountCredit = "DataBase/Credit/Session.json"
 
 # Sessions
 def load_session_user():
@@ -185,7 +186,16 @@ class Online_Shop:
         file_reading = load_AddProduct_data()
         file_reading_users = load_data()
         file_admin_discount = admin.load_discount()
+
+        # Imported File Account Credit
         data_session_file = Account_Credit.load_data_session()
+        data_file_AccountCredit = Account_Credit.load_data_credit()
+
+        # File Credit
+        
+        def save_data_session(data_session):
+            with open(data_session_file_AccountCredit, "w", encoding="utf-8") as file:
+                json.dump(data_session, file, ensure_ascii=False, indent=4)
 
         for index in file_reading_users:
             for kay in file_reading:
@@ -249,13 +259,32 @@ class Online_Shop:
                 Balance = data_session_file["Amount"] - result
                 
         print(f"{Balance} EGP of your account has been deducted.")
-        
+
+        History = data_session_file["History"]
         if choose == "y":
+            if result_after_discount != None:
+                History.append(result_after_discount * -1)
+            else:
+                History.append(result * -1)
+
+            for key_ed_data in data_file_AccountCredit:
+                Edit_Credit = {
+                    "id": key_ed_data["id"],
+                    "Number ID": key_ed_data["number_ID"],
+                    "Amount": Balance,
+                    "History": History,
+                    "Created_at": created_at
+                }
+
+            save_data_session(Edit_Credit)
+            
             data.append(add_checkout)
             save_CheckOut(data)
             print("Done")
         elif choose == "n":
             print("Ok")
+
+    
 
 if __name__ == "__main__":
     while True:
