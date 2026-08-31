@@ -127,58 +127,65 @@ class Created_Account:
                     password = input("Please enter your password: ")
                     if password == i["Password"]:
                         print("Done: Login account")
-                        self.products()
+                        Online_Shop().products()
+                    else:
+                        print("Error: Not Found password")
+                else:
+                    print(f"Error: Not Found {username}")
 
 class Online_Shop:
     def products(self):
         data = load_AddProduct_data()
-        with open(data_products_file, "r", encoding="utf-8") as file, open(data_session_file, "r", encoding="utf-8") as file_user:
-            read_all_products = json.load(file)
-            read_all_product_user = json.load(file_user)
-            
-            print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
-            print("-" * 68)
-            
-            for i in read_all_products: 
-                print(f"{i['id']:<5}{i['Name']:<20}{i['Price']:<15.2f}{i['quantity']:<8}{i['Created_at']}")
+        read_all_products = admin.load_product()
+        read_all_product_user = load_session_user()
 
-            print("-" * 4)
-            while True:
-                select_product = input("Please select product: ").strip()
-                if select_product == "":
-                    print("Error: You must enter a value")
-                    continue
+        print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
+        print("-" * 68)
+        
+        for i in read_all_products: 
+            print(f"{i['id']:<5}{i['Name']:<20}{i['Price']:<15.2f}{i['quantity']:<8}{i['Created_at']}")
+
+        print("-" * 4)
+        while True:
+            select_product = input("Please select product: ").strip()
+            if select_product == "":
+                print("Error: You must enter a value")
+                continue
+            break
+
+        for product in read_all_products:
+            if select_product == product["Name"]:
+                add_id = product["id"]
+                add_id_user = read_all_product_user["id"]
+                add_name = product["Name"]
+                add_price = product["Price"]
+                add_token = read_all_product_user["Token"]
+                created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
+                new_add_cart = {
+                    "id": add_id,
+                    "id_user": add_id_user,
+                    "Name": add_name,
+                    "Price": add_price,
+                    "Token": add_token,
+                    "Created_at": created_at
+                }
+
+                data.append(new_add_cart)
+                save_AddProduct_data(data)
+                
+                print(f"Done: Add to cart {add_name}")
                 break
 
-            for product in read_all_products:
-                if select_product == product["Name"]:
-                    add_id = product["id"]
-                    add_id_user = read_all_product_user["id"]
-                    add_name = product["Name"]
-                    add_price = product["Price"]
-                    add_token = read_all_product_user["Token"]
-                    created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
-                    new_add_cart = {
-                        "id": add_id,
-                        "id_user": add_id_user,
-                        "Name": add_name,
-                        "Price": add_price,
-                        "Token": add_token,
-                        "Created_at": created_at
-                    }
-
-                    data.append(new_add_cart)
-                    save_AddProduct_data(data)
-                    
-                    print(f"Done: Add to cart {add_name}")
-                    break
-
     def show_all_product(self):
+            result_SAP = 0
             file_reading = load_AddProduct_data()
             print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
             print("-" * 68)
             for index in file_reading: 
-                print(f"{index['id']:<5}{index['Name']:<20}{index['Price']:<15.2f}{index['quantity']:<8}{index['Created_at']}")
+                print(f"{index['id']:<5}{index['Name']:<20}{index['Price']:<15.2f}{index['Created_at']}")
+                result_SAP += index["Price"]
+            print("-" * 68)
+            print(f"Total: {result_SAP:>25.2f}")
 
     def chack_out(self):
         global result
@@ -192,7 +199,6 @@ class Online_Shop:
         data_file_AccountCredit = Account_Credit.load_data_credit()
 
         # File Credit
-        
         def save_data_session(data_session):
             with open(data_session_file_AccountCredit, "w", encoding="utf-8") as file:
                 json.dump(data_session, file, ensure_ascii=False, indent=4)
@@ -288,6 +294,8 @@ def show_LoSi():
     print("1. Sigh in")
     print("2. Login")
     print("3. Show Menu OS")
+    print("4. Credit Card")
+    print("0. Exit")
 
 def show_menu():
     print("1. Products")
@@ -296,17 +304,42 @@ def show_menu():
     print("0. Exit")
 
 def CA_User():
-    in_CA = Created_Account()
+    in_CA = Created_Account("user")
     while True:
         show_LoSi()
-        choose = int(input("Please Choose From Menu: "))
+        while True:
+            try:
+                choose = int(input("Please Choose From Menu: "))
+                break
+            except ValueError:
+                print("Error: Please Choose From Menu")
+                continue
 
+        if choose == 1:
+            InputUser()
+        elif choose == 2:
+            in_CA.login()
+        elif choose == 3:
+            manu()
+            break
+        elif choose == 4:
+            Account_Credit.main()
+        else:
+            print("Thank you")
+            break
 
 def manu():
     in_OS = Online_Shop()
     while True:
         show_menu()
-        choose = int(input("Please Choose from menu: "))
+        while True:
+            try:
+                choose = int(input("Please Choose from menu: "))
+                break
+            except ValueError:
+                print("Error: Please enter your Menu")
+                continue
+
         if choose == 1:
             in_OS.products()
         elif choose == 2:
@@ -320,12 +353,14 @@ def manu():
             continue
 
 def InputUser():
-    if __name__ == "__main__":
-        while True:
-            chease = input("Please Enter your Opint User or admin: ").lower()
-            if chease == "":
-                print("Error: You must enter a value")
-                continue
-            else:
-                Online_Shop().chack_out()
-                break
+    while True:
+        chease = input("Please Enter your Opint User or admin: ").lower()
+        if chease == "":
+            print("Error: You must enter a value")
+            continue
+        else:
+            Created_Account(chease).option_adus()
+            break
+
+if __name__ == "__main__":
+    CA_User()
