@@ -138,7 +138,12 @@ def discount():
     data = load_discount()
     while True:
         try:
-            AddDiscount = input("Please enter your discount: ").strip()
+            AddDiscount = float(input("Please enter your discount: ").strip())
+            NameDiscount = input("Please enter your name discount: ")
+            dics = any(dis["Name"] == NameDiscount for dis in data)
+            if dics:
+                print(f"Error: Product '{NameDiscount}' already exists. Please enter a different name.")
+                continue
             break
         except ValueError:
             print("Error: Please enter your discount")
@@ -147,11 +152,14 @@ def discount():
     created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
     new_input_discount = {
         "id": new_id,
+        "Name": NameDiscount,
         "Discount": AddDiscount,
         "Created_at": created_at
     }
 
     data.append(new_input_discount)
     save_discount(data)
-1
-discount()
+    print("-" * 5)
+    print(f"Done: Created discount {AddDiscount}")
+
+# discount()

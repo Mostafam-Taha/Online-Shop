@@ -194,9 +194,28 @@ class Online_Shop:
         print("-" * 32)
         print(f"{'Total':<20}{result:>10.2f} EGP")
 
-        x = file_reading
-        data.append(x)
-        save_CheckOut(data)
+        quiz = input("Do you add discount (Yas => y, No=> n)? ")
+        while True:
+            if quiz == "y":
+                en_discount = input("Enter your discount: ")
+                search_discount = admin.load_discount()
+                for key_discount in search_discount:
+                    if en_discount == key_discount["Name"]:
+                        result_after_discount = result - key_discount["Discount"]
+                        print(f"{'Total':<20}{result:>10.2f} EGP")
+                        print(f"{'Dis':<20} {-key_discount["Discount"]:>10.2f} EGP")
+                        print(f"{'Total':<20}{result_after_discount:>10.2f} EGP")
+                break
+            elif quiz == "n":
+                print("Ok")
+                break
+            else:
+                print("Error: Try agian")
+                continue
+
+        # new_checkout = {
+
+        # }
 
 while True:
     chease = input("Please Enter your Opint User or admin: ").lower()
