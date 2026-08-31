@@ -1,14 +1,12 @@
 import json
 import os
 import random
-import main
 from datetime import datetime
 
 data_Credit_file = "DataBase/Credit/Credit.json"
 data_session_file = "DataBase/Credit/Session.json"
 data_session_file_main = "DataBase/Users/Session_user.json"
 Amount = 0
-
 
 # Login and Sigh in User
 def load_data_credit():
@@ -33,6 +31,8 @@ def save_data_session(data_session):
         json.dump(data_session, file, ensure_ascii=False, indent=4)
 
 def created_account():
+    import main
+
     data = load_data_credit()
     data_user = main.load_session_user()
     while True:
@@ -100,7 +100,6 @@ def login():
             
     save_data_session(new_session)
     print("Done Welcome to user")
-    deposit()
 
 def deposit():
     data_credit = load_data_credit()
@@ -131,8 +130,39 @@ def deposit():
                     }
 
                 save_data_session(Edit_Credit)
-                print(Edit_Credit)
                 print(f"Done: Insart {Amount_input} EGP, Balance: {Balance} EGP")
                 break
             else:
                 print("Error: Deposit nigateve")
+
+def show_menu():
+    print("==== Credit ====")
+    print("1. Created Account ")
+    print("2. Login")
+    print("3. Desposit")
+    print("0. Exit")
+
+def main():
+    while True:
+        show_menu()
+        while True:
+            try:
+                choose = int(input("Please Choose Menu: "))
+                break
+            except ValueError:
+                print("Error: Please Choose Menu")
+                continue
+        if choose == 1:
+            created_account()
+        elif choose == 2:
+            login()
+        elif choose == 3:
+            deposit()
+        elif choose == 0:
+            break
+        else:
+            print("Thank you")
+            break
+
+if __name__ == "__Account_Credit__":
+    main()
