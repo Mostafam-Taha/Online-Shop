@@ -10,6 +10,7 @@ data_user_file = "DataBase/Users/Users.json"
 data_session_file = "DataBase/Users/Session_user.json"
 data_products_file = "DataBase/Products/Products.json"
 data_Addproduct_file = "DataBase/Products/List_product.json"
+data_CheckOut_file = "DataBase/Products/CheckOut.json"
 result = 0
 
 # Sessions
@@ -44,7 +45,18 @@ def load_AddProduct_data():
 def save_AddProduct_data(data_AddProduct):
     with open(data_Addproduct_file, "w", encoding="utf-8") as file:
         json.dump(data_AddProduct, file, indent=4, ensure_ascii=False)
-    
+
+# CheckOut
+def load_CheckOut():
+    if not os.path.exists(data_CheckOut_file):
+        return []
+    with open(data_CheckOut_file, "r", encoding="utf-8") as file:
+        return json.load(file)
+
+def save_CheckOut(data_checkout):
+    with open(data_CheckOut_file, "w", encoding="utf-8") as file:
+        json.dump(data_checkout, file, indent=4, ensure_ascii=False)
+
 def generate_random_string(length=32):
     characters = string.digits + string.ascii_letters + string.punctuation
     return ''.join(secrets.choice(characters) for _ in range(length))
@@ -169,15 +181,22 @@ class Online_Shop:
 
     def chack_out(self):
         global result
+        data = load_CheckOut()
         file_reading = load_AddProduct_data()
         file_reading_users = load_data()
         for index in file_reading_users:
             for kay in file_reading:
                 if index["id"] == kay["id_user"]:
                     result = kay["Price"] + result
-                    print(f"{kay['Name']:<20}{kay['Price']:>10.2f} EGP")
-        print("-" * 30)
+                    menu = f"{kay['Name']:<20}{kay['Price']:>10.2f} EGP"
+                    print(menu)
+
+        print("-" * 32)
         print(f"{'Total':<20}{result:>10.2f} EGP")
+
+        x = file_reading
+        data.append(x)
+        save_CheckOut(data)
 
 while True:
     chease = input("Please Enter your Opint User or admin: ").lower()

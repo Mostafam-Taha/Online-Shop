@@ -4,7 +4,9 @@ from datetime import datetime
 
 data_file_admin = "DataBase/Admin/Admin.json"
 data_file_product = "DataBase/Admin/Products.json"
+data_file_discount = "DataBase/Admin/Discount.json"
 
+# Load Login
 def load_data():
     if not os.path.exists(data_file_admin):
         return []
@@ -15,6 +17,7 @@ def save_data(data):
     with open(data_file_admin, "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
+# Load Product
 def load_product():
     if not os.path.exists(data_file_product):
         return []
@@ -25,6 +28,18 @@ def save_product(data_product):
     with open(data_file_product, "w", encoding="utf-8") as file:
         json.dump(data_product, file, ensure_ascii=False, indent=4)
 
+# Load Discount
+def load_discount():
+    if not os.path.exists(data_file_discount):
+        return []
+    with open(data_file_discount, "r", encoding="utf-8") as file:
+        return json.load(file)
+
+def save_discount(data_discount):
+    with open(data_file_discount, "w", encoding="utf-8") as file:
+        json.dump(data_discount, file, indent=4, ensure_ascii=False)
+
+# ----
 def option_account():
     user_input = int(input("Please choase\n1. Login\n2. Sigh in\n"))
     if user_input == 1:
@@ -117,3 +132,26 @@ def add_product():
     print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
     print("-" * 68)
     print(f"{id_product:<5}{name_product:<20}{price_product:<15.2f}{quantity:<8}{created_at}")
+
+# Discount
+def discount():
+    data = load_discount()
+    while True:
+        try:
+            AddDiscount = input("Please enter your discount: ").strip()
+            break
+        except ValueError:
+            print("Error: Please enter your discount")
+            continue
+    new_id = max([emp["id"] for emp in data], default=0) + 1
+    created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
+    new_input_discount = {
+        "id": new_id,
+        "Discount": AddDiscount,
+        "Created_at": created_at
+    }
+
+    data.append(new_input_discount)
+    save_discount(data)
+1
+discount()
