@@ -40,15 +40,37 @@ def save_discount(data_discount):
         json.dump(data_discount, file, indent=4, ensure_ascii=False)
 
 # ----
-def option_account():
-    user_input = int(input("Please choase\n1. Login\n2. Sigh in\n"))
-    if user_input == 1:
-        sgin_in()
-    elif user_input == 2:
-        login()
-    else:
-        print("Error: Faild")
+def menu_option():
+    print("1. Sigh in")
+    print("2. Login")
+    print("3. App_Product")
+    print("4. Discount")
+    print("0. Exit")
 
+def option_account():
+    while True:
+        menu_option()
+        while True:
+            try:
+                user_input = int(input("Please choas From menu: "))
+                break
+            except ValueError:
+                print("Error: Please enter your menu")
+                continue
+
+        if user_input == 1:
+            sgin_in()
+        elif user_input == 2:
+            login()
+        elif user_input == 3:
+            add_product()
+        elif user_input == 4:
+            discount()
+        elif user_input == 0:
+            break
+        else:
+            print("Error: Faild")
+            break
 
 def sgin_in():
     data_admin = load_data()
@@ -161,5 +183,3 @@ def discount():
     save_discount(data)
     print("-" * 5)
     print(f"Done: Created discount {AddDiscount}")
-
-# discount()

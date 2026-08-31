@@ -8,6 +8,7 @@ import Account_Credit
 from datetime import datetime
 
 result = 0
+
 data_user_file = "DataBase/Users/Users.json"
 data_session_file = "DataBase/Users/Session_user.json"
 data_products_file = "DataBase/Products/Products.json"
@@ -17,7 +18,7 @@ data_session_file_AccountCredit = "DataBase/Credit/Session.json"
 
 # Sessions
 def load_session_user():
-    if not os.path.exists(data_user_file):
+    if not os.path.exists(data_session_file):
         return []
     with open(data_session_file, "r", encoding="utf-8") as file:
         return json.load(file)
@@ -179,11 +180,15 @@ class Online_Shop:
     def show_all_product(self):
             result_SAP = 0
             file_reading = load_AddProduct_data()
+            # file_users_reading = load_data()
+            file_session_reading = load_session_user()
             print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
             print("-" * 68)
-            for index in file_reading: 
-                print(f"{index['id']:<5}{index['Name']:<20}{index['Price']:<15.2f}{index['Created_at']}")
-                result_SAP += index["Price"]
+            for index in file_reading:
+                if file_session_reading["id"] == index["id_user"]:
+                    print(f"{index['id']:<5}{index['Name']:<20}{index['Price']:<15.2f}{index['Created_at']}")
+                    result_SAP += index["Price"]
+
             print("-" * 68)
             print(f"Total: {result_SAP:>25.2f}")
 
@@ -191,6 +196,7 @@ class Online_Shop:
         global result
         data = load_CheckOut()
         file_reading = load_AddProduct_data()
+        file_data_reading_session = load_session_user()
         file_reading_users = load_data()
         file_admin_discount = admin.load_discount()
 
@@ -203,92 +209,94 @@ class Online_Shop:
             with open(data_session_file_AccountCredit, "w", encoding="utf-8") as file:
                 json.dump(data_session, file, ensure_ascii=False, indent=4)
 
-        for index in file_reading_users:
-            for kay in file_reading:
-                if index["id"] == kay["id_user"]:
-                    result = kay["Price"] + result
+        for index_key_data in file_reading:
+            if file_data_reading_session["id"] == index_key_data["id_user"]:
+                for index in file_reading_users:
+                    for kay in file_reading:
+                        if index["id"] == kay["id_user"]:
+                            result = kay["Price"] + result
 
-                    menu = f"{kay['Name']:<20}{kay['Price']:>10.2f} EGP"
-                    print(menu)
+                            menu = f"{kay['Name']:<20}{kay['Price']:>10.2f} EGP"
+                            print(menu)
 
-        print("-" * 32)
-        print(f"{'Total':<20}{result:>10.2f} EGP")
+                print("-" * 32)
+                print(f"{'Total':<20}{result:>10.2f} EGP")
 
-        # Discount
-        while True:
-            quiz = input("Do you add discount (Yas => y, No=> n)? ")
-            if quiz == "y":
-                en_discount = input("Enter your discount: ")
-                search_discount = admin.load_discount()
-                result_after_discount = None
-                for key_discount in search_discount:
-                    if en_discount == key_discount["Name"]:
-                        result_after_discount = result - key_discount["Discount"]
-                        print(f"{'Total':<20}{result:>10.2f} EGP")
-                        print(f"{'Dis':<20} {-key_discount["Discount"]:>10.2f} EGP")
-                        print(f"{'Total':<20}{result_after_discount:>10.2f} EGP")
-                break
-            elif quiz == "n":
-                print("Ok")
-                result_after_discount = None
-                break
-            else:
-                print("Error: Try agian")
-                result_after_discount = None
-                continue
+                # Discount
+                while True:
+                    quiz = input("Do you add discount (Yas => y, No=> n)? ")
+                    if quiz == "y":
+                        en_discount = input("Enter your discount: ")
+                        search_discount = admin.load_discount()
+                        result_after_discount = None
+                        for key_discount in search_discount:
+                            if en_discount == key_discount["Name"]:
+                                result_after_discount = result - key_discount["Discount"]
+                                print(f"{'Total':<20}{result:>10.2f} EGP")
+                                print(f"{'Dis':<20} {-key_discount["Discount"]:>10.2f} EGP")
+                                print(f"{'Total':<20}{result_after_discount:>10.2f} EGP")
+                        break
+                    elif quiz == "n":
+                        print("Ok")
+                        result_after_discount = None
+                        break
+                    else:
+                        print("Error: Try agian")
+                        result_after_discount = None
+                        continue
 
-        created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
-        for add_checkout_index, discount_admin in zip(file_reading, file_admin_discount ):
-            add_checkout = {
-                "Products": (add_checkout_index["Name"], add_checkout_index["Price"]),
-                "Total_price": result,
-                "Discount": (discount_admin["Name"], discount_admin["Discount"]),
-                "Total_After_discount": result_after_discount,
-                "Created_at": created_at
-            }
+                created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
+                for add_checkout_index, discount_admin in zip(file_reading, file_admin_discount ):
+                    add_checkout = {
+                        "Products": (add_checkout_index["Name"], add_checkout_index["Price"]),
+                        "Total_price": result,
+                        "Discount": (discount_admin["Name"], discount_admin["Discount"]),
+                        "Total_After_discount": result_after_discount,
+                        "Created_at": created_at
+                    }
 
-        while True:
-            try:
-                choose = input("Do you want to complete it? (Yas => y, No => n): ").strip()
-                break
-            except ValueError:
-                print("Error")
-                continue
+                while True:
+                    try:
+                        choose = input("Do you want to complete it? (Yas => y, No => n): ").strip()
+                        break
+                    except ValueError:
+                        print("Error")
+                        continue
 
-        if data_session_file["Amount"] < result:
-            print("You do not h ave enough credit.")
-            return
-        else:
-            if result_after_discount != None:
-                Balance = data_session_file["Amount"] - result_after_discount
-            else:
-                Balance = data_session_file["Amount"] - result
-                
-        print(f"{Balance} EGP of your account has been deducted.")
+                if data_session_file["Amount"] < result:
+                    print("You do not h ave enough credit.")
+                    return
+                else:
+                    if result_after_discount != None:
+                        Balance = data_session_file["Amount"] - result_after_discount
+                    else:
+                        Balance = data_session_file["Amount"] - result
+                        
+                print(f"{Balance} EGP of your account has been deducted.")
 
-        History = data_session_file["History"]
-        if choose == "y":
-            if result_after_discount != None:
-                History.append(result_after_discount * -1)
-            else:
-                History.append(result * -1)
+                History = data_session_file["History"]
+                if choose == "y":
+                    if result_after_discount != None:
+                        History.append(result_after_discount * -1)
+                    else:
+                        History.append(result * -1)
 
-            for key_ed_data in data_file_AccountCredit:
-                Edit_Credit = {
-                    "id": key_ed_data["id"],
-                    "Number ID": key_ed_data["number_ID"],
-                    "Amount": Balance,
-                    "History": History,
-                    "Created_at": created_at
-                }
+                    for key_ed_data in data_file_AccountCredit:
+                        Edit_Credit = {
+                            "id": key_ed_data["id"],
+                            "Number ID": key_ed_data["number_ID"],
+                            "Amount": Balance,
+                            "History": History,
+                            "Created_at": created_at
+                        }
 
-            save_data_session(Edit_Credit)
-            
-            data.append(add_checkout)
-            save_CheckOut(data)
-            print("Done")
-        elif choose == "n":
-            print("Ok")
+                    save_data_session(Edit_Credit)
+                    
+                    data.append(add_checkout)
+                    save_CheckOut(data)
+                    print("Done")
+                elif choose == "n":
+                    print("Ok")
 
 def show_LoSi():
     print("1. Sigh in")
