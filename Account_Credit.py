@@ -55,10 +55,14 @@ def created_account():
 
     created_number_CreditCard = random.randint(10000000000000, 99999999999999)
     created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
+    new_id = data_user["id"]
+    dis_ar = any(id_te["id"] == new_id for id_te in data)
+    if dis_ar:
+        print(f"Error: Product '{new_id}' already exists. Please enter a different name.")
 
     for i in data_user:
         new_viza = {
-            "id": data_user["id"],
+            "id": new_id,
             "Username": username,
             "Password": password,
             "number_ID": created_number_CreditCard,
@@ -89,8 +93,11 @@ def login():
             new_session = {
                 "id": index["id"],
                 "Number ID": index["number_ID"],
+                "Amount": 0,
+                "History": [],
                 "Created_at": created_at
             }
+            
     save_data_session(new_session)
     print("Done Welcome to user")
     deposit()
@@ -98,8 +105,34 @@ def login():
 def deposit():
     data_credit = load_data_credit()
     data_session_file = load_data_session()
+    Balance = data_session_file["Amount"]
+    History = data_session_file["History"]
     for amount in data_credit:
-        if amount["id"] == data_session_file:
-            print(amount)
+        if amount["id"] == data_session_file["id"]:
+            while True:
+                try:
+                    Amount_input = float(input("Please enter your Amount: "))
+                    break
+                except ValueError:
+                    print("Error: Please enter your Amount Currect")
+                    continue
 
-deposit()
+            if Amount_input > 0:
+                Balance += Amount_input
+                History.append(Amount_input)
+                created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
+                for key_ed_data in data_credit:
+                    Edit_Credit = {
+                        "id": key_ed_data["id"],
+                        "Number ID": key_ed_data["number_ID"],
+                        "Amount": Balance,
+                        "History": History,
+                        "Created_at": created_at
+                    }
+
+                save_data_session(Edit_Credit)
+                print(Edit_Credit)
+                print(f"Done: Insart {Amount_input} EGP, Balance: {Balance} EGP")
+                break
+            else:
+                print("Error: Deposit nigateve")

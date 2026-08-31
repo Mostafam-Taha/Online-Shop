@@ -4,14 +4,15 @@ import json
 import secrets
 import string
 import admin
+import Account_Credit
 from datetime import datetime
 
+result = 0
 data_user_file = "DataBase/Users/Users.json"
 data_session_file = "DataBase/Users/Session_user.json"
 data_products_file = "DataBase/Products/Products.json"
 data_Addproduct_file = "DataBase/Products/List_product.json"
 data_CheckOut_file = "DataBase/Products/CheckOut.json"
-result = 0
 
 # Sessions
 def load_session_user():
@@ -107,7 +108,6 @@ class Created_Account:
                 save_data(data)
 
                 # Session User
-                # data_session.append(session_user)
                 save_session_user(session_user)
                 print("Done: Created account")
                 break
@@ -184,21 +184,27 @@ class Online_Shop:
         data = load_CheckOut()
         file_reading = load_AddProduct_data()
         file_reading_users = load_data()
+        file_admin_discount = admin.load_discount()
+        data_session_file = Account_Credit.load_data_session()
+
         for index in file_reading_users:
             for kay in file_reading:
                 if index["id"] == kay["id_user"]:
                     result = kay["Price"] + result
+
                     menu = f"{kay['Name']:<20}{kay['Price']:>10.2f} EGP"
                     print(menu)
 
         print("-" * 32)
         print(f"{'Total':<20}{result:>10.2f} EGP")
 
-        quiz = input("Do you add discount (Yas => y, No=> n)? ")
+        # Discount
         while True:
+            quiz = input("Do you add discount (Yas => y, No=> n)? ")
             if quiz == "y":
                 en_discount = input("Enter your discount: ")
                 search_discount = admin.load_discount()
+                result_after_discount = None
                 for key_discount in search_discount:
                     if en_discount == key_discount["Name"]:
                         result_after_discount = result - key_discount["Discount"]
@@ -208,20 +214,55 @@ class Online_Shop:
                 break
             elif quiz == "n":
                 print("Ok")
+                result_after_discount = None
                 break
             else:
                 print("Error: Try agian")
+                result_after_discount = None
                 continue
 
-        # new_checkout = {
+        created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
+        for add_checkout_index, discount_admin in zip(file_reading, file_admin_discount ):
+            add_checkout = {
+                "Products": (add_checkout_index["Name"], add_checkout_index["Price"]),
+                "Total_price": result,
+                "Discount": (discount_admin["Name"], discount_admin["Discount"]),
+                "Total_After_discount": result_after_discount,
+                "Created_at": created_at
+            }
 
-        # }
+        while True:
+            try:
+                choose = input("Do you want to complete it? (Yas => y, No => n): ").strip()
+                break
+            except ValueError:
+                print("Error")
+                continue
 
-while True:
-    chease = input("Please Enter your Opint User or admin: ").lower()
-    if chease == "":
-        print("Error: You must enter a value")
-        continue
-    else:
-        Online_Shop().chack_out()
-        break
+        if data_session_file["Amount"] < result:
+            print("You do not h ave enough credit.")
+            return
+        else:
+            if result_after_discount != None:
+                Balance = data_session_file["Amount"] - result_after_discount
+            else:
+                Balance = data_session_file["Amount"] - result
+                
+        print(f"{Balance} EGP of your account has been deducted.")
+        
+        if choose == "y":
+            data.append(add_checkout)
+            save_CheckOut(data)
+            print("Done")
+        elif choose == "n":
+            print("Ok")
+
+if __name__ == "__main__":
+    while True:
+        chease = input("Please Enter your Opint User or admin: ").lower()
+        if chease == "":
+            print("Error: You must enter a value")
+            continue
+        else:
+            Online_Shop().chack_out()
+            break
