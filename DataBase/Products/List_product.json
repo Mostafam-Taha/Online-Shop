@@ -1,26 +1,10 @@
 [
     {
         "id": 1,
-        "id_user": 9,
+        "id_user": 2,
         "Name": "Oil",
-        "Price": 43,
-        "Token": "$#}4:@99h\\i<V3WMi/G7Nl]#]%f=-Ox&",
-        "Created_at": "Aug-2026-30 16:06:14"
-    },
-    {
-        "id": 5,
-        "id_user": 9,
-        "Name": "po",
-        "Price": 543,
-        "Token": "$#}4:@99h\\i<V3WMi/G7Nl]#]%f=-Ox&",
-        "Created_at": "Aug-2026-30 16:06:39"
-    },
-    {
-        "id": 13,
-        "id_user": 9,
-        "Name": "a",
-        "Price": 3456,
-        "Token": "$#}4:@99h\\i<V3WMi/G7Nl]#]%f=-Ox&",
-        "Created_at": "Aug-2026-30 21:50:14"
+        "Price": 43.0,
+        "Token": "W(QkJA[^>oO`;@PSi!?G&]xGw{`]aA0U",
+        "Created_at": "Aug-2026-31 22:50:54"
     }
 ]

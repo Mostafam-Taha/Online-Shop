@@ -7,8 +7,6 @@ import admin
 import Account_Credit
 from datetime import datetime
 
-result = 0
-
 data_user_file = "DataBase/Users/Users.json"
 data_session_file = "DataBase/Users/Session_user.json"
 data_products_file = "DataBase/Products/Products.json"
@@ -133,6 +131,7 @@ class Created_Account:
                         print("Error: Not Found password")
                 else:
                     print(f"Error: Not Found {username}")
+                    return False
 
 class Online_Shop:
     def products(self):
@@ -193,7 +192,7 @@ class Online_Shop:
             print(f"Total: {result_SAP:>25.2f}")
 
     def chack_out(self):
-        global result
+        result = 0
         data = load_CheckOut()
         file_reading = load_AddProduct_data()
         file_data_reading_session = load_session_user()

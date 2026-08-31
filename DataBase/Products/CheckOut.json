@@ -1,211 +1,28 @@
 [
     {
         "Products": [
-            "a",
-            3456
+            "Oil",
+            43.0
         ],
-        "Total_price": 4042,
-        "Total_After_discount": null
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Total_After_discount": 3988
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": 54,
-        "Total_After_discount": 3988
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": 54,
-        "Total_After_discount": null
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": 54,
-        "Total_After_discount": 3988
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": 54,
-        "Total_After_discount": null,
-        "Created_at": "Aug-2026-31 09:58:43"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
+        "Total_price": 43.0,
         "Discount": [
-            "dis_54",
-            54
+            "F_14",
+            99.0
         ],
-        "Total_After_discount": 3988,
-        "Created_at": "Aug-2026-31 10:00:14"
+        "Total_After_discount": -56.0,
+        "Created_at": "Sep-2026-01 01:54:12"
     },
     {
         "Products": [
-            "a",
-            3456
+            "Oil",
+            43.0
         ],
-        "Total_price": 4042,
+        "Total_price": 43.0,
         "Discount": [
-            "dis_54",
-            54
+            "F_14",
+            99.0
         ],
-        "Total_After_discount": null,
-        "Created_at": "Aug-2026-31 10:05:55"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": 3988,
-        "Created_at": "Aug-2026-31 11:41:08"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": 3988,
-        "Created_at": "Aug-2026-31 12:04:40"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": null,
-        "Created_at": "Aug-2026-31 12:05:00"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": 3988,
-        "Created_at": "Aug-2026-31 12:05:59"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": null,
-        "Created_at": "Aug-2026-31 12:06:09"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": 3988,
-        "Created_at": "Aug-2026-31 12:07:33"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": 3988,
-        "Created_at": "Aug-2026-31 12:09:24"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": null,
-        "Created_at": "Aug-2026-31 12:34:17"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": null,
-        "Created_at": "Aug-2026-31 12:35:50"
-    },
-    {
-        "Products": [
-            "a",
-            3456
-        ],
-        "Total_price": 4042,
-        "Discount": [
-            "dis_54",
-            54
-        ],
-        "Total_After_discount": 3988,
-        "Created_at": "Aug-2026-31 12:36:28"
+        "Total_After_discount": -56.0,
+        "Created_at": "Sep-2026-01 02:17:51"
     }
 ]
