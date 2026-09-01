@@ -41,9 +41,9 @@ def save_discount(data_discount):
 
 # ----
 def menu_option():
-    print("1. Sigh in")
+    print("1. Sign in")
     print("2. Login")
-    print("3. App_Product")
+    print("3. Add product")
     print("4. Discount")
     print("0. Exit")
 
@@ -52,10 +52,10 @@ def option_account():
         menu_option()
         while True:
             try:
-                user_input = int(input("Please choas From menu: "))
+                user_input = int(input("Please choose from menu: "))
                 break
             except ValueError:
-                print("Error: Please enter your menu")
+                print("Error: Please enter a valid menu number")
                 continue
 
         if user_input == 1:
@@ -69,7 +69,7 @@ def option_account():
         elif user_input == 0:
             break
         else:
-            print("Error: Faild")
+            print("Error: Invalid option")
             break
 
 def sgin_in():
@@ -81,7 +81,7 @@ def sgin_in():
     username_admin = input("Please enter your username: ")
     while True:
         password_admin = input("Please enter your password: ")
-        password_currunt_admin = input("Please enter your password currunt: ")
+        password_currunt_admin = input("Please confirm your password: ")
         if password_admin == password_currunt_admin:
             new_id = max([a_id["id"] for a_id in data_admin], default=0) + 1
             created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
@@ -93,10 +93,10 @@ def sgin_in():
             }
             data_admin.append(new_admin_account)
             save_data(data_admin)
-            print("Done: Created account")
+            print("Done: Admin account created successfully")
             break
         else:
-            print("Error: please enter your password")
+            print("Error: Passwords do not match, please try again")
             continue
 
 def login():
@@ -105,17 +105,21 @@ def login():
 
     with open(data_file_admin, "r", encoding="utf-8") as file:
         file_admin = json.load(file)
+        found = False
         for index in file_admin:
             if index["Username"] == username:
+                found = True
                 add_product()
                 break
+        if not found:
+            print(f"Error: Username '{username}' not found")
 
 def add_product():
     data = load_product()
     print("-" * 20)
 
     while True:
-        name_product = input("Please enter your name product: ").strip()
+        name_product = input("Please enter product name: ").strip()
         duplicate = any(row["Name"] == name_product for row in data)
         if duplicate:
             print(f"Error: Product '{name_product}' already exists. Please enter a different name.")
@@ -124,18 +128,18 @@ def add_product():
 
     while True:
         try:
-            price_product = float(input(f"Please enter your price, {name_product}: "))
+            price_product = float(input(f"Please enter price for {name_product}: "))
             break
         except ValueError:
-            print("Error: please enter your price currect")
+            print("Error: Please enter a valid price")
             continue
 
     while True:
         try:
-            quantity = int(input(f"Please enter your quantity, {name_product}: "))
+            quantity = int(input(f"Please enter quantity for {name_product}: "))
             break
         except ValueError:
-            print("Please enter your quantity")
+            print("Error: Please enter a valid quantity")
             continue
 
     id_product = max([product_id["id"] for product_id in data], default=0) + 1
@@ -151,6 +155,7 @@ def add_product():
 
     data.append(new_product)
     save_product(data)
+    print(f"Done: Product '{name_product}' added successfully")
     print(f"{'ID':<5}{'Name':<20}{'Price':<15}{'Qty':<8}{'Created At':<20}")
     print("-" * 68)
     print(f"{id_product:<5}{name_product:<20}{price_product:<15.2f}{quantity:<8}{created_at}")
@@ -160,15 +165,15 @@ def discount():
     data = load_discount()
     while True:
         try:
-            AddDiscount = float(input("Please enter your discount: ").strip())
-            NameDiscount = input("Please enter your name discount: ")
+            AddDiscount = float(input("Please enter discount amount: ").strip())
+            NameDiscount = input("Please enter discount name: ")
             dics = any(dis["Name"] == NameDiscount for dis in data)
             if dics:
-                print(f"Error: Product '{NameDiscount}' already exists. Please enter a different name.")
+                print(f"Error: Discount '{NameDiscount}' already exists. Please enter a different name.")
                 continue
             break
         except ValueError:
-            print("Error: Please enter your discount")
+            print("Error: Please enter a valid discount amount")
             continue
     new_id = max([emp["id"] for emp in data], default=0) + 1
     created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
@@ -182,4 +187,4 @@ def discount():
     data.append(new_input_discount)
     save_discount(data)
     print("-" * 5)
-    print(f"Done: Created discount {AddDiscount}")
+    print(f"Done: Discount '{NameDiscount}' of {AddDiscount:.2f} created successfully")

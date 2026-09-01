@@ -40,17 +40,17 @@ def created_account():
             username = input("Please enter your username: ").strip()
             break
         except ValueError:
-            print("Error: Please enter your username Currect: ")
+            print("Error: Please enter a valid username")
             continue
     while True:
         try:
-            password = int(input("Please enter your password: "))
+            password = int(input("Please enter a 4-digit PIN: "))
             if len(str(password)) != 4:
-                print("Error: Please enter your password 4 degits")
+                print("Error: PIN must be exactly 4 digits")
                 continue
             break
         except ValueError:
-            print("Error: Please enter your password current")
+            print("Error: Please enter numbers only")
             continue
 
     created_number_CreditCard = random.randint(10000000000000, 99999999999999)
@@ -58,7 +58,7 @@ def created_account():
     new_id = data_user["id"]
     dis_ar = any(id_te["id"] == new_id for id_te in data)
     if dis_ar:
-        print(f"Error: Product '{new_id}' already exists. Please enter a different name.")
+        print(f"Error: A credit account for this user already exists.")
 
     for i in data_user:
         new_viza = {
@@ -73,22 +73,25 @@ def created_account():
 
     data.append(new_viza)
     save_data_credit(data)
+    print("Done: Credit account created successfully")
 
 def login():
     log_file = load_data_credit()
     while True:
         try:
-            password = int(input("Please enter your password: "))
+            password = int(input("Please enter your 4-digit PIN: "))
             if len(str(password)) != 4:
-                print("Error: Please enter your password 4 degits")
+                print("Error: PIN must be exactly 4 digits")
                 continue
             break
         except ValueError:
-            print("Error: Please enter your password currect")
+            print("Error: Please enter numbers only")
             continue
 
+    found = False
     for index in log_file:
         if password == index["Password"]:
+            found = True
             created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
             new_session = {
                 "id": index["id"],
@@ -97,9 +100,12 @@ def login():
                 "History": [],
                 "Created_at": created_at
             }
-            
-    save_data_session(new_session)
-    print("Done Welcome to user")
+            save_data_session(new_session)
+            print("Done: Login successful, welcome!")
+            break
+
+    if not found:
+        print("Error: PIN not found")
 
 def deposit():
     data_credit = load_data_credit()
@@ -110,10 +116,10 @@ def deposit():
         if amount["id"] == data_session_file["id"]:
             while True:
                 try:
-                    Amount_input = float(input("Please enter your Amount: "))
+                    Amount_input = float(input("Please enter deposit amount: "))
                     break
                 except ValueError:
-                    print("Error: Please enter your Amount Currect")
+                    print("Error: Please enter a valid amount")
                     continue
 
             if Amount_input > 0:
@@ -130,16 +136,16 @@ def deposit():
                     }
 
                 save_data_session(Edit_Credit)
-                print(f"Done: Insart {Amount_input} EGP, Balance: {Balance} EGP")
+                print(f"Done: Deposited {Amount_input:.2f} EGP, new balance: {Balance:.2f} EGP")
                 break
             else:
-                print("Error: Deposit nigateve")
+                print("Error: Deposit amount must be greater than zero")
 
 def show_menu():
     print("==== Credit ====")
-    print("1. Created Account ")
+    print("1. Create account")
     print("2. Login")
-    print("3. Desposit")
+    print("3. Deposit")
     print("0. Exit")
 
 def main():
@@ -150,7 +156,7 @@ def main():
                 choose = int(input("Please Choose Menu: "))
                 break
             except ValueError:
-                print("Error: Please Choose Menu")
+                print("Error: Please enter a valid menu number")
                 continue
         if choose == 1:
             created_account()
@@ -161,7 +167,7 @@ def main():
         elif choose == 0:
             break
         else:
-            print("Thank you")
+            print("Thank you, goodbye!")
             break
 
 if __name__ == "__Account_Credit__":

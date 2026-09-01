@@ -72,8 +72,8 @@ class Created_Account:
         elif self.us_ad == "admin":
             admin.option_account()
         else:
-            print("Error")
-    
+            print("Error: Invalid option")
+
     def sgin_up(self):
         data = load_data()
         data_session = load_session_user()
@@ -84,7 +84,7 @@ class Created_Account:
         u_username = input("Please enter your username: ")
         while True:
             u_password = input("Please enter your password: ")
-            u_password_currunt = input("Please enter your password currunt: ")
+            u_password_currunt = input("Please confirm your password: ")
             if u_password == u_password_currunt:
                 new_id = max([emp["id"] for emp in data], default=0) + 1
                 created_at = datetime.now().strftime("%b-%Y-%d %H:%M:%S")
@@ -109,10 +109,10 @@ class Created_Account:
 
                 # Session User
                 save_session_user(session_user)
-                print("Done: Created account")
+                print("Done: Account created successfully")
                 break
             else:
-                print("Error: Incurrect password")
+                print("Error: Passwords do not match, please try again")
                 continue
 
     def login(self):
@@ -125,13 +125,13 @@ class Created_Account:
                 if username == i["Username"]:
                     password = input("Please enter your password: ")
                     if password == i["Password"]:
-                        print("Done: Login account")
+                        print("Done: Login successful")
                         Online_Shop().products()
                     else:
-                        print("Error: Not Found password")
+                        print("Error: Incorrect password")
                 else:
-                    print(f"Error: Not Found {username}")
-                    return False
+                    # print(f"Error: Username '{username}' not found")
+                    pass
 
 class Online_Shop:
     def products(self):
@@ -153,8 +153,10 @@ class Online_Shop:
                 continue
             break
 
+        found = False
         for product in read_all_products:
             if select_product == product["Name"]:
+                found = True
                 add_id = product["id"]
                 add_id_user = read_all_product_user["id"]
                 add_name = product["Name"]
@@ -173,8 +175,11 @@ class Online_Shop:
                 data.append(new_add_cart)
                 save_AddProduct_data(data)
                 
-                print(f"Done: Add to cart {add_name}")
+                print(f"Done: Added '{add_name}' to cart")
                 break
+
+        if not found:
+            print(f"Error: Product '{select_product}' not found")
 
     def show_all_product(self):
             result_SAP = 0
@@ -189,7 +194,7 @@ class Online_Shop:
                     result_SAP += index["Price"]
 
             print("-" * 68)
-            print(f"Total: {result_SAP:>25.2f}")
+            print(f"Total: {result_SAP:>21.2f} EGP")
 
     def chack_out(self):
         result = 0
@@ -223,24 +228,28 @@ class Online_Shop:
 
                 # Discount
                 while True:
-                    quiz = input("Do you add discount (Yas => y, No=> n)? ")
+                    quiz = input("Do you want to add a discount? (y/n): ")
                     if quiz == "y":
-                        en_discount = input("Enter your discount: ")
+                        en_discount = input("Please enter discount name: ")
                         search_discount = admin.load_discount()
                         result_after_discount = None
+                        discount_found = False
                         for key_discount in search_discount:
                             if en_discount == key_discount["Name"]:
+                                discount_found = True
                                 result_after_discount = result - key_discount["Discount"]
                                 print(f"{'Total':<20}{result:>10.2f} EGP")
-                                print(f"{'Dis':<20} {-key_discount["Discount"]:>10.2f} EGP")
-                                print(f"{'Total':<20}{result_after_discount:>10.2f} EGP")
+                                print(f"{'Discount':<20} {-key_discount['Discount']:>10.2f} EGP")
+                                print(f"{'Total after discount':<20}{result_after_discount:>10.2f} EGP")
+                        if not discount_found:
+                            print(f"Error: Discount '{en_discount}' not found")
                         break
                     elif quiz == "n":
                         print("Ok")
                         result_after_discount = None
                         break
                     else:
-                        print("Error: Try agian")
+                        print("Error: Please enter y or n")
                         result_after_discount = None
                         continue
 
@@ -256,22 +265,22 @@ class Online_Shop:
 
                 while True:
                     try:
-                        choose = input("Do you want to complete it? (Yas => y, No => n): ").strip()
+                        choose = input("Do you want to complete the purchase? (y/n): ").strip()
                         break
                     except ValueError:
-                        print("Error")
+                        print("Error: Please enter y or n")
                         continue
 
                 if data_session_file["Amount"] < result:
-                    print("You do not h ave enough credit.")
+                    print("Error: You do not have enough credit.")
                     return
                 else:
                     if result_after_discount != None:
                         Balance = data_session_file["Amount"] - result_after_discount
                     else:
                         Balance = data_session_file["Amount"] - result
-                        
-                print(f"{Balance} EGP of your account has been deducted.")
+
+                print(f"{Balance:.2f} EGP remaining after deduction.")
 
                 History = data_session_file["History"]
                 if choose == "y":
@@ -293,21 +302,21 @@ class Online_Shop:
                     
                     data.append(add_checkout)
                     save_CheckOut(data)
-                    print("Done")
+                    print("Done: Checkout completed successfully")
                 elif choose == "n":
-                    print("Ok")
+                    print("Ok: Checkout cancelled")
 
 def show_LoSi():
-    print("1. Sigh in")
+    print("1. Sign in")
     print("2. Login")
-    print("3. Show Menu OS")
-    print("4. Credit Card")
+    print("3. Shop menu")
+    print("4. Credit card")
     print("0. Exit")
 
 def show_menu():
     print("1. Products")
-    print("2. Show All Product")
-    print("3. Check Out")
+    print("2. Show cart")
+    print("3. Check out")
     print("0. Exit")
 
 def CA_User():
@@ -316,10 +325,10 @@ def CA_User():
         show_LoSi()
         while True:
             try:
-                choose = int(input("Please Choose From Menu: "))
+                choose = int(input("Please choose from menu: "))
                 break
             except ValueError:
-                print("Error: Please Choose From Menu")
+                print("Error: Please enter a valid menu number")
                 continue
 
         if choose == 1:
@@ -332,7 +341,7 @@ def CA_User():
         elif choose == 4:
             Account_Credit.main()
         else:
-            print("Thank you")
+            print("Thank you, goodbye!")
             break
 
 def manu():
@@ -341,10 +350,10 @@ def manu():
         show_menu()
         while True:
             try:
-                choose = int(input("Please Choose from menu: "))
+                choose = int(input("Please choose from menu: "))
                 break
             except ValueError:
-                print("Error: Please enter your Menu")
+                print("Error: Please enter a valid menu number")
                 continue
 
         if choose == 1:
@@ -356,12 +365,12 @@ def manu():
         elif choose == 0:
             break
         else:
-            print("Error: Again")
+            print("Error: Invalid option, please try again")
             continue
 
 def InputUser():
     while True:
-        chease = input("Please Enter your Opint User or admin: ").lower()
+        chease = input("Please enter 'user' or 'admin': ").lower()
         if chease == "":
             print("Error: You must enter a value")
             continue
